@@ -1,40 +1,38 @@
-from skimage import io
-from sklearn.cluster import KMeans
+import argparse
+
 import numpy as np
 import matplotlib.pyplot as plt
-from itertools import product
-import argparse
+from skimage import io
+
+AMOGI_DENSITY = 0.01
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--input')
 args = parser.parse_args()
 
-def clamp(n, smallest, largest): 
-    return max(smallest, min(n, largest))
-
 img = io.imread(args.input) / 255
 if img.shape[-1] == 3:
     img = np.concatenate([img, np.ones((img.shape[0], img.shape[1], 1))], axis=2)
-
-contains_amogi_mask = np.zeros_like(img)
 out_img = img * np.array([1, 1, 1, 0.9])
-
 img_width, img_height, img_depth = img.shape
-amogi = np.array([
-    [1, 1, 1, 0],
-    [0.5, 0.5, 1, 1],
-    [1, 1, 1, 1],
-    [1, 1, 1, 0],
-    [1, 0, 1, 0]
+
+
+AMOGI = np.array([
+    [1.0, 1.0, 1.0, 0.0],
+    [0.5, 0.5, 1.0, 1.0],
+    [1.0, 1.0, 1.0, 1.0],
+    [1.0, 1.0, 1.0, 0.0],
+    [1.0, 0.0, 1.0, 0.0]
 ])
-amogi = np.stack([amogi]*4, axis=2)
+AMOGI = np.stack([AMOGI]*4, axis=2)
 
-c = int(0.01 * img.size)
-for x, y in zip(np.random.randint(0, img_width - amogi.shape[0], c), np.random.randint(0, img_height - amogi.shape[1], c)):
-    amogi_with_dir = np.flip(amogi, axis=1) if np.random.randint(0, 2) else amogi
+amogi_count = int(AMOGI_DENSITY * img.size)
+randx = np.random.randint(0, img_width - AMOGI.shape[0], amogi_count)
+randy = np.random.randint(0, img_height - AMOGI.shape[1], amogi_count)
+for x, y in zip(randx, randy):
     if img[x, y][:-1].sum() < 2.9:
-        out_img[x:x+amogi.shape[0], y:y+amogi.shape[1], :] = amogi_with_dir * img[x, y] + (amogi_with_dir == 0) * out_img[x:x+amogi.shape[0], y:y+amogi.shape[1], :]
-
+        amogi_with_dir = np.flip(AMOGI, axis=1) if np.random.randint(0, 2) else AMOGI
+        out_img[x:x+AMOGI.shape[0], y:y+AMOGI.shape[1], :] = amogi_with_dir * img[x, y] + (amogi_with_dir == 0) * out_img[x:x+AMOGI.shape[0], y:y+AMOGI.shape[1], :]
 
 plt.imshow(out_img)
 plt.show()
