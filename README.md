@@ -23,6 +23,5 @@ optional arguments:
   --input INPUT      path to the input image to be converted
   --output OUTPUT    path to the output image to be saved
   --density DENSITY  number of amogi to add per pixel
-  --show             this flag specified whether to plot a comparison of the
-                     image & it's conversion
+  --show             show a plot comparing the original image and its conversion
 ```
