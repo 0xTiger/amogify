@@ -2,7 +2,6 @@ import os
 import argparse
 
 import numpy as np
-import matplotlib.pyplot as plt
 from skimage import io
 
 
@@ -48,6 +47,7 @@ out_filepath = f'{input_filename}_amogified.png' if args.output is None else arg
 io.imsave(out_filepath, out_img)
 
 if args.show:
+    import matplotlib.pyplot as plt
     fig, axs = plt.subplots(1, 2, sharex=True, sharey=True)
     axs[0].imshow(img)
     axs[0].set_xticks([])
