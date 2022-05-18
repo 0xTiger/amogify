@@ -10,7 +10,7 @@ parser.add_argument('--input', required=True, help='path to the input image to b
 parser.add_argument('--output', help='path to the output image to be saved')
 parser.add_argument('--density', type=float, default=0.01, help='number of amogi to add per pixel')
 parser.add_argument('--show', action='store_true', 
-    help='this flag specified whether to plot a comparison of the image & it\'s conversion')
+    help='show a plot comparing the original image and its conversion')
 args = parser.parse_args()
 
 img = io.imread(args.input) / 255
