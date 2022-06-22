@@ -1,5 +1,5 @@
 # Amogify
-A simple Python script to fill your images with amogi. Inspired by Reddit's [r/place](reddit.com/r/place)
+A simple Python script to fill your images with amogi. Inspired by Reddit's [r/place](https://www/reddit.com/r/place)
 
 ## Usage
 Create a new virtual environment:
